@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Team {
+public class TeamEntity {
 
     @Id
     private UUID id;
@@ -23,9 +23,9 @@ public class Team {
 
     @ManyToOne
     @JoinColumn(name = "id_service")
-    private Service service;
+    private ServiceEntity service;
 
     @ManyToOne
     @JoinColumn(name = "id_company")
-    private Company company;
+    private CompanyEntity company;
 }

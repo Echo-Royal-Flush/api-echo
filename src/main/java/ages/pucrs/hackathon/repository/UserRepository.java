@@ -1,11 +1,11 @@
 package ages.pucrs.hackathon.repository;
 
-import ages.pucrs.hackathon.entity.User;
+import ages.pucrs.hackathon.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<User, UUID> {
-    Optional<User> findByEmail(String email);
+public interface UserRepository extends JpaRepository<UserEntity, UUID> {
+    Optional<UserEntity> findByEmail(String email);
 }

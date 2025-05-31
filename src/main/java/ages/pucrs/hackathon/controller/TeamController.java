@@ -1,6 +1,6 @@
 package ages.pucrs.hackathon.controller;
 
-import ages.pucrs.hackathon.entity.Team;
+import ages.pucrs.hackathon.entity.TeamEntity;
 import ages.pucrs.hackathon.service.TeamService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,24 +18,24 @@ public class TeamController {
     }
 
     @GetMapping
-    public List<Team> getAll() {
+    public List<TeamEntity> getAll() {
         return teamService.listAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Team> getById(@PathVariable UUID id) {
+    public ResponseEntity<TeamEntity> getById(@PathVariable UUID id) {
         return teamService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Team> create(@RequestBody Team team) {
+    public ResponseEntity<TeamEntity> create(@RequestBody TeamEntity team) {
         return ResponseEntity.ok(teamService.create(team));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Team> update(@PathVariable UUID id, @RequestBody Team team) {
+    public ResponseEntity<TeamEntity> update(@PathVariable UUID id, @RequestBody TeamEntity team) {
         return ResponseEntity.ok(teamService.update(id, team));
     }
 

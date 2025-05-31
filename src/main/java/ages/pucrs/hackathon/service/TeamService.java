@@ -1,6 +1,6 @@
 package ages.pucrs.hackathon.service;
 
-import ages.pucrs.hackathon.entity.Team;
+import ages.pucrs.hackathon.entity.TeamEntity;
 import ages.pucrs.hackathon.repository.TeamRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +17,19 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    public List<Team> listAll() {
+    public List<TeamEntity> listAll() {
         return teamRepository.findAll();
     }
 
-    public Optional<Team> findById(UUID id) {
+    public Optional<TeamEntity> findById(UUID id) {
         return teamRepository.findById(id);
     }
 
-    public Team create(Team team) {
+    public TeamEntity create(TeamEntity team) {
         return teamRepository.save(team);
     }
 
-    public Team update(UUID id, Team teamData) {
+    public TeamEntity update(UUID id, TeamEntity teamData) {
         return teamRepository.findById(id)
                 .map(team -> {
                     team.setName(teamData.getName());

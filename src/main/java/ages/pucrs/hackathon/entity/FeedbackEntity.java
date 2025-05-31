@@ -12,18 +12,18 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Feedback {
+public class FeedbackEntity {
 
     @Id
     private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "id_card")
-    private Card card;
+    private CardEntity card;
 
     @ManyToOne
     @JoinColumn(name = "id_evaluator")
-    private User evaluator;
+    private UserEntity evaluator;
 
     @Column(name = "id_evaluated")
     private UUID idEvaluated;

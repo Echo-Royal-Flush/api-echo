@@ -11,16 +11,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserTeam {
+public class UserTeamEntity {
 
     @Id
     private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "id_user")
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "id_team")
-    private Team team;
+    private TeamEntity team;
 }

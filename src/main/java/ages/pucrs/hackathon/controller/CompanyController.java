@@ -1,6 +1,6 @@
 package ages.pucrs.hackathon.controller;
 
-import ages.pucrs.hackathon.entity.Company;
+import ages.pucrs.hackathon.entity.CompanyEntity;
 import ages.pucrs.hackathon.service.CompanyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,24 +18,24 @@ public class CompanyController {
     }
 
     @GetMapping
-    public List<Company> getAll() {
+    public List<CompanyEntity> getAll() {
         return companyService.listAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Company> getById(@PathVariable UUID id) {
+    public ResponseEntity<CompanyEntity> getById(@PathVariable UUID id) {
         return companyService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Company> create(@RequestBody Company company) {
+    public ResponseEntity<CompanyEntity> create(@RequestBody CompanyEntity company) {
         return ResponseEntity.ok(companyService.create(company));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Company> update(@PathVariable UUID id, @RequestBody Company company) {
+    public ResponseEntity<CompanyEntity> update(@PathVariable UUID id, @RequestBody CompanyEntity company) {
         return ResponseEntity.ok(companyService.update(id, company));
     }
 

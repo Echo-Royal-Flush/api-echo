@@ -1,6 +1,6 @@
 package ages.pucrs.hackathon.service;
 
-import ages.pucrs.hackathon.entity.Company;
+import ages.pucrs.hackathon.entity.CompanyEntity;
 import ages.pucrs.hackathon.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +17,19 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    public List<Company> listAll() {
+    public List<CompanyEntity> listAll() {
         return companyRepository.findAll();
     }
 
-    public Optional<Company> findById(UUID id) {
+    public Optional<CompanyEntity> findById(UUID id) {
         return companyRepository.findById(id);
     }
 
-    public Company create(Company company) {
+    public CompanyEntity create(CompanyEntity company) {
         return companyRepository.save(company);
     }
 
-    public Company update(UUID id, Company companyData) {
+    public CompanyEntity update(UUID id, CompanyEntity companyData) {
         return companyRepository.findById(id)
                 .map(company -> {
                     company.setName(companyData.getName());

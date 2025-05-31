@@ -1,6 +1,6 @@
 package ages.pucrs.hackathon.controller;
 
-import ages.pucrs.hackathon.entity.Feedback;
+import ages.pucrs.hackathon.entity.FeedbackEntity;
 import ages.pucrs.hackathon.service.FeedbackService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,24 +18,24 @@ public class FeedbackController {
     }
 
     @GetMapping
-    public List<Feedback> getAll() {
+    public List<FeedbackEntity> getAll() {
         return feedbackService.listAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Feedback> getById(@PathVariable UUID id) {
+    public ResponseEntity<FeedbackEntity> getById(@PathVariable UUID id) {
         return feedbackService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Feedback> create(@RequestBody Feedback feedback) {
+    public ResponseEntity<FeedbackEntity> create(@RequestBody FeedbackEntity feedback) {
         return ResponseEntity.ok(feedbackService.create(feedback));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Feedback> update(@PathVariable UUID id, @RequestBody Feedback feedback) {
+    public ResponseEntity<FeedbackEntity> update(@PathVariable UUID id, @RequestBody FeedbackEntity feedback) {
         return ResponseEntity.ok(feedbackService.update(id, feedback));
     }
 

@@ -1,6 +1,6 @@
 package ages.pucrs.hackathon.service;
 
-import ages.pucrs.hackathon.entity.Card;
+import ages.pucrs.hackathon.entity.CardEntity;
 import ages.pucrs.hackathon.repository.CardRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +17,19 @@ public class CardService {
         this.cardRepository = cardRepository;
     }
 
-    public List<Card> listAll() {
+    public List<CardEntity> listAll() {
         return cardRepository.findAll();
     }
 
-    public Optional<Card> findById(UUID id) {
+    public Optional<CardEntity> findById(UUID id) {
         return cardRepository.findById(id);
     }
 
-    public Card create(Card card) {
+    public CardEntity create(CardEntity card) {
         return cardRepository.save(card);
     }
 
-    public Card update(UUID id, Card cardData) {
+    public CardEntity update(UUID id, CardEntity cardData) {
         return cardRepository.findById(id)
                 .map(card -> {
                     card.setCategory(cardData.getCategory());

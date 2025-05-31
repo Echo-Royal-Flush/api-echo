@@ -1,6 +1,6 @@
 package ages.pucrs.hackathon.service;
 
-import ages.pucrs.hackathon.entity.Feedback;
+import ages.pucrs.hackathon.entity.FeedbackEntity;
 import ages.pucrs.hackathon.repository.FeedbackRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +17,19 @@ public class FeedbackService {
         this.feedbackRepository = feedbackRepository;
     }
 
-    public List<Feedback> listAll() {
+    public List<FeedbackEntity> listAll() {
         return feedbackRepository.findAll();
     }
 
-    public Optional<Feedback> findById(UUID id) {
+    public Optional<FeedbackEntity> findById(UUID id) {
         return feedbackRepository.findById(id);
     }
 
-    public Feedback create(Feedback feedback) {
+    public FeedbackEntity create(FeedbackEntity feedback) {
         return feedbackRepository.save(feedback);
     }
 
-    public Feedback update(UUID id, Feedback feedbackData) {
+    public FeedbackEntity update(UUID id, FeedbackEntity feedbackData) {
         return feedbackRepository.findById(id)
                 .map(feedback -> {
                     feedback.setCard(feedbackData.getCard());

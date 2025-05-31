@@ -37,9 +37,10 @@ CREATE TABLE
 CREATE TABLE
     "card" (
         "id" UUID PRIMARY KEY NOT NULL,
-        "category" VARCHAR(50) NOT NULL,
+        "category" VARCHAR(15) CHECK ("category" IN ('Comum', 'Raro', 'Epico', 'Lendario')) NOT NULL,
         "type" VARCHAR(30) CHECK ("type" IN ('NEGATIVE', 'POSITIVE')) NOT NULL
     );
+
 
 CREATE TABLE
     "user_team" (
@@ -111,8 +112,11 @@ INSERT INTO "user_team" ("id", "id_user", "id_team") VALUES
 
 -- MOCK CARDS
 INSERT INTO "card" ("id", "category", "type") VALUES
-  ('88888888-8888-8888-8888-888888888888', 'Colaboração', 'POSITIVE'),
-  ('99999999-9999-9999-9999-999999999999', 'Atraso', 'NEGATIVE');
+  ('88888888-8888-8888-8888-888888888888', 'Comum', 'POSITIVE'),
+  ('99999999-9999-9999-9999-999999999999', 'Raro', 'NEGATIVE'),
+  ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Epico', 'POSITIVE'),
+  ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Lendario', 'NEGATIVE');
+
 
 -- MOCK FEEDBACKS
 INSERT INTO "feedback" ("id", "id_card", "id_evaluator", "id_evaluated", "description", "date", "is_anon", "type") VALUES

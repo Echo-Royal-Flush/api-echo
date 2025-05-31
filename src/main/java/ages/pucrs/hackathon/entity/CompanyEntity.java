@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Company {
+public class CompanyEntity {
 
     @Id
     private UUID id;
