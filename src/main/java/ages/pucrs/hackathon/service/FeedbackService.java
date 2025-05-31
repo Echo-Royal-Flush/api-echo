@@ -1,12 +1,11 @@
 package ages.pucrs.hackathon.service;
 
+import ages.pucrs.hackathon.projection.FeedbackCountByType;
 import ages.pucrs.hackathon.entity.FeedbackEntity;
 import ages.pucrs.hackathon.repository.FeedbackRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class FeedbackService {
@@ -45,5 +44,12 @@ public class FeedbackService {
 
     public void delete(UUID id) {
         feedbackRepository.deleteById(id);
+    }
+
+    public List<FeedbackCountByType> getRetroByUser(UUID userId) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+        Date startDate = cal.getTime();
+        return feedbackRepository.countFeedbacksByTypeForUserInLastMonth(userId, startDate);
     }
 }
