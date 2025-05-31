@@ -1,8 +1,13 @@
 package ages.pucrs.hackathon.service;
 
+import ages.pucrs.hackathon.dto.PageDTO;
 import ages.pucrs.hackathon.projection.FeedbackCountByType;
 import ages.pucrs.hackathon.entity.FeedbackEntity;
 import ages.pucrs.hackathon.repository.FeedbackRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -51,5 +56,19 @@ public class FeedbackService {
         cal.add(Calendar.MONTH, -1);
         Date startDate = cal.getTime();
         return feedbackRepository.countFeedbacksByTypeForUserInLastMonth(userId, startDate);
+    }
+
+    public PageDTO<FeedbackEntity> pageReturn(Integer pagina, Integer tamanho) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "date");
+        Pageable pageable = PageRequest.of(pagina, tamanho, sort);
+        Page<FeedbackEntity> feedbackEntityPage = feedbackRepository.findAll(pageable);
+
+        return new PageDTO<>(
+                feedbackEntityPage.getTotalElements(),
+                feedbackEntityPage.getTotalPages(),
+                feedbackEntityPage.getPageable().getPageNumber(),
+                feedbackEntityPage.getSize(),
+                feedbackEntityPage.getContent()
+        );
     }
 }
