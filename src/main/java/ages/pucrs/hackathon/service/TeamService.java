@@ -5,6 +5,7 @@ import ages.pucrs.hackathon.entity.CompanyEntity;
 import ages.pucrs.hackathon.entity.TeamEntity;
 import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.entity.UserTeamEntity;
+import ages.pucrs.hackathon.repository.CompanyRepository;
 import ages.pucrs.hackathon.repository.TeamRepository;
 import ages.pucrs.hackathon.repository.UserRepository;
 import ages.pucrs.hackathon.repository.UserTeamRepository;
@@ -28,15 +29,18 @@ public class TeamService {
     private final UserTeamRepository userTeamRepository;
     private final UserRepository userRepository;
     private final WebClient webClient;
+    private final CompanyRepository companyRepository;
 
     public TeamService(TeamRepository teamRepository,
                        UserTeamRepository userTeamRepository,
                        UserRepository userRepository,
-                       WebClient.Builder webClientBuilder) {
+                       WebClient.Builder webClientBuilder,
+                       CompanyRepository companyRepository) {
         this.teamRepository = teamRepository;
         this.userTeamRepository = userTeamRepository;
         this.userRepository = userRepository;
         this.webClient = webClientBuilder.baseUrl("https://graph.microsoft.com/beta").build();
+        this.companyRepository = companyRepository;
     }
 
     public List<TeamEntity> listAll() {
@@ -48,11 +52,12 @@ public class TeamService {
     }
 
     public TeamEntity create(TeamRequest teamRequest) {
+        CompanyEntity companyEntity = companyRepository.findById(UUID.fromString(teamRequest.getCompanyId())).orElseThrow(()-> new EntityNotFoundException()); 
         TeamEntity teamEntity = new TeamEntity(UUID.randomUUID(),
                 teamRequest.getName(),
                 teamRequest.getLength(),
                 teamRequest.getService(),
-                new CompanyEntity()); // necessario buscar por company_id recebido pelo Auth
+                companyEntity); // necessario buscar por company_id recebido pelo Auth
 
         teamEntity = teamRepository.save(teamEntity);
 

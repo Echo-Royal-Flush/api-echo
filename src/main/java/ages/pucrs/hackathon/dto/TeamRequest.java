@@ -26,4 +26,7 @@ public class TeamRequest {
 
     @NotBlank(message = "Members should be informed")
     private List<UUID> members;
+
+    @NotBlank(message = "Company id should be informed")
+    private String companyId;
 }
