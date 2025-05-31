@@ -23,4 +23,6 @@ public interface FeedbackRepository extends JpaRepository<FeedbackEntity, UUID> 
             @Param("startDate") Date startDate
     );
 
+    long countByDateBetweenAndEvaluatorId(Date start, Date end, UUID evaluatorId);
+
 }
