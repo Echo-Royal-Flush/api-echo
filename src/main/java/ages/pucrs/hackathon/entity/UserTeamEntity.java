@@ -5,7 +5,7 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user_team")
+@Table(name = "users_team")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +17,7 @@ public class UserTeamEntity {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "id_users")
     private UserEntity user;
 
     @ManyToOne
