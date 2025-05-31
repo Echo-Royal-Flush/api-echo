@@ -15,6 +15,7 @@ import java.util.UUID;
 public class FeedbackEntity {
 
     @Id
+    @GeneratedValue
     private UUID id;
 
     @ManyToOne

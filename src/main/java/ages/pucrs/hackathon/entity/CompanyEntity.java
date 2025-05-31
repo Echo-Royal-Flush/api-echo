@@ -14,6 +14,7 @@ import java.util.UUID;
 public class CompanyEntity {
 
     @Id
+    @GeneratedValue
     private UUID id;
 
     private String name;

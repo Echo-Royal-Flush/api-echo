@@ -14,6 +14,7 @@ import java.util.UUID;
 public class CardEntity {
 
     @Id
+    @GeneratedValue
     private UUID id;
 
     private String category;

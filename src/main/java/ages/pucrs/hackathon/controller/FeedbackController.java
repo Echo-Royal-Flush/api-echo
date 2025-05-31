@@ -1,5 +1,6 @@
 package ages.pucrs.hackathon.controller;
 
+import ages.pucrs.hackathon.dto.SendFeedbackUserDTO;
 import ages.pucrs.hackathon.entity.CardEntity;
 import ages.pucrs.hackathon.entity.FeedbackEntity;
 import ages.pucrs.hackathon.service.FeedbackService;
@@ -46,14 +47,15 @@ public class FeedbackController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{userId}/{card_type}")
-    public ResponseEntity<Void> registerFeedbackToUser(
-        @PathVariable UUID currenUserId,
-        @PathVariable UUID userId, 
-        @PathVariable String card_type, 
-        @RequestBody UUID id,
-        @RequestBody String description) {
-        feedbackService.registerFeedbackToUser(id, currenUserId, userId, card_type, description);
+    @PostMapping("/sendUserFeedback")
+    public ResponseEntity<Void> registerFeedbackToUser(@RequestBody SendFeedbackUserDTO userFeedback) {
+        feedbackService.registerFeedbackToUser(userFeedback);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/sendServiceFeedback")
+    public ResponseEntity<Void> registerFeedbackToService(@RequestBody SendFeedbackUserDTO userFeedback){
+        feedbackService.registerFeedbackToService(userFeedback);
         return ResponseEntity.noContent().build();
     }
 

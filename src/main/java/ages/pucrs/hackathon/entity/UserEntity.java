@@ -14,6 +14,7 @@ import java.util.UUID;
 public class UserEntity {
 
     @Id
+    @GeneratedValue
     private UUID id;
 
     private String name;

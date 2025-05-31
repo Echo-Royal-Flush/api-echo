@@ -14,6 +14,7 @@ import java.util.UUID;
 public class UserTeamEntity {
 
     @Id
+    @GeneratedValue
     private UUID id;
 
     @ManyToOne
