@@ -53,8 +53,12 @@ Foco no engajamento: A plataforma foi pensada para ser intuitiva e estimular a p
 - [x] Login
 - [x] Atribuir carta
 - [x] Visualizar cartas
-- [ ] Coleção de cartas em desenvolvimento
-
+- [x] Coleção de cartas
+- [x] Autenticação via JWT
+- [x] Notificação no teams
+- [x] Fazer feedback para time
+- [x] Fazer feedback para serviço
+- [x] Deploy na EC2
 ---
 
 ## Tecnologias Utilizadas
