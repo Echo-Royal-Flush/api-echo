@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.http.ResponseEntity.accepted;
+
 @RestController
 @RequestMapping("/teams")
 public class TeamController {
@@ -44,4 +46,11 @@ public class TeamController {
         teamService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("trigger")
+    public ResponseEntity<String> triggerTeamFeedbackEvent(@RequestBody UUID teamId) {
+        teamService.triggerTeam(teamId);
+        return ResponseEntity.accepted().body("Disparado");
+    }
+
 }

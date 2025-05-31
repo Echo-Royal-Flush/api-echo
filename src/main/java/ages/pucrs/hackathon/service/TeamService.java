@@ -1,20 +1,29 @@
 package ages.pucrs.hackathon.service;
 
 import ages.pucrs.hackathon.entity.TeamEntity;
+import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.repository.TeamRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.util.*;
 
 @Service
 public class TeamService {
 
+    @Value("${teams.token}")
+    private String token;
     private final TeamRepository teamRepository;
+    private final WebClient webClient;
 
-    public TeamService(TeamRepository teamRepository) {
+    public TeamService(TeamRepository teamRepository, WebClient.Builder webClientBuilder) {
         this.teamRepository = teamRepository;
+        this.webClient = webClientBuilder.baseUrl("https://graph.microsoft.com/beta").build();
     }
 
     public List<TeamEntity> listAll() {
@@ -42,5 +51,35 @@ public class TeamService {
 
     public void delete(UUID id) {
         teamRepository.deleteById(id);
+    }
+
+    @Async
+    public void triggerTeam(UUID teamId) {
+        List<UserEntity> usersToReport = teamRepository.findAllUsersByTeamId(teamId);
+        for (UserEntity user : usersToReport) {
+
+
+        }
+        String chatId = "19:d9ddd12b-750e-4173-8ebe-1fed14e8e280_f5feea6a-117c-4c06-bcca-784739b7a23b@unq.gbl.spaces";
+        System.out.println(token);
+        String message = "Não esqueça de dar seu feedback para a hackthona. É muito importante para nós http://meusite.com.br";
+
+        String response = sendMessageToChat(chatId, message, token);
+    }
+
+    public String sendMessageToChat(String chatId, String messageContent, String bearerToken) {
+        Map<String, Object> body = new HashMap<>();
+        Map<String, String> contentMap = new HashMap<>();
+        contentMap.put("content", messageContent);
+        body.put("body", contentMap);
+
+        return webClient.post()
+                .uri("/chats/{chatId}/messages", chatId)
+                .header("Authorization", bearerToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 }
