@@ -1,9 +1,13 @@
 package ages.pucrs.hackathon.service;
 
+import ages.pucrs.hackathon.dto.UserTeamRequest;
 import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.entity.UserTeamEntity;
+import ages.pucrs.hackathon.repository.TeamRepository;
+import ages.pucrs.hackathon.repository.UserRepository;
 import ages.pucrs.hackathon.repository.UserTeamRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +20,13 @@ import ages.pucrs.hackathon.entity.TeamEntity;
 public class UserTeamService {
 
     private final UserTeamRepository userTeamRepository;
+    private final UserRepository userRepository;
+    private final TeamRepository teamRepository;
 
-    public UserTeamService(UserTeamRepository userTeamRepository) {
+    public UserTeamService(UserTeamRepository userTeamRepository, UserRepository userRepository, TeamRepository teamRepository) {
         this.userTeamRepository = userTeamRepository;
+        this.userRepository = userRepository;
+        this.teamRepository = teamRepository;
     }
 
     public List<UserEntity> findUsersByTeamId(UUID teamId) {
@@ -43,8 +51,17 @@ public class UserTeamService {
         return userTeamRepository.findById(id);
     }
 
-    public UserTeamEntity create(UserTeamEntity userTeam) {
-        return userTeamRepository.save(userTeam);
+    public UserTeamEntity create(UserTeamRequest userTeamRequest) {
+        TeamEntity team = teamRepository.findById(
+                UUID.fromString(userTeamRequest.getTeamId())
+        ).orElseThrow(() -> new EntityNotFoundException("Team not found"));
+
+        UserEntity user = userRepository.findById(
+                UUID.fromString(userTeamRequest.getUserId())
+        ).orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        UserTeamEntity userTeamEntity = new UserTeamEntity(UUID.randomUUID(), user, team);
+        return userTeamRepository.save(userTeamEntity);
     }
 
     public UserTeamEntity update(UUID id, UserTeamEntity userTeamData) {
