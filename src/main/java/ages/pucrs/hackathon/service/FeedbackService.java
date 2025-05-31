@@ -6,7 +6,6 @@ import ages.pucrs.hackathon.entity.CardEntity;
 import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.projection.FeedbackCountByType;
 import ages.pucrs.hackathon.entity.FeedbackEntity;
-import ages.pucrs.hackathon.repository.CardRepository;
 import ages.pucrs.hackathon.repository.FeedbackRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -84,15 +83,16 @@ public class FeedbackService {
         return feedbackRepository.countFeedbacksByTypeForUserInLastMonth(userId, startDate);
     }
 
-    public PageDTO<FeedbackEntity> pageReturn(Integer pagina, Integer tamanho) {
+    public PageDTO<FeedbackEntity> pageReturn(UUID userId, Integer pagina, Integer tamanho) {
         Sort sort = Sort.by(Sort.Direction.DESC, "date");
         Pageable pageable = PageRequest.of(pagina, tamanho, sort);
-        Page<FeedbackEntity> feedbackEntityPage = feedbackRepository.findAll(pageable);
+
+        Page<FeedbackEntity> feedbackEntityPage = feedbackRepository.findAllByIdEvaluated(userId, pageable);
 
         return new PageDTO<>(
                 feedbackEntityPage.getTotalElements(),
                 feedbackEntityPage.getTotalPages(),
-                feedbackEntityPage.getPageable().getPageNumber(),
+                feedbackEntityPage.getNumber(),
                 feedbackEntityPage.getSize(),
                 feedbackEntityPage.getContent()
         );
