@@ -8,6 +8,7 @@
 - [Sobre o Projeto](#sobre-o-projeto)
 - [Funcionalidades](#funcionalidades)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Banco de Dados](#banco-de-dados)
 - [Pré-requisitos](#pré-requisitos)
 - [Como Rodar o Projeto](#como-rodar-o-projeto)
 - [Estrutura do Projeto](#estrutura-do-projeto)
@@ -69,6 +70,10 @@ Foco no engajamento: A plataforma foi pensada para ser intuitiva e estimular a p
 - **Outros:** Docker
 
 ---
+
+## Banco de Dados
+
+![drawSQL-image-export-2025-05-31](https://github.com/user-attachments/assets/456687af-7ff4-454d-9033-2f1f93e66adb)
 
 ## Pré-requisitos
 
