@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface UserTeamRepository extends JpaRepository<UserTeamEntity, UUID> {
      List<UserTeamEntity> findByTeam_Id(UUID teamId);
+     List<UserTeamEntity> findAllByUserId(UUID userId);
+
 }
