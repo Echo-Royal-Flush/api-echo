@@ -1,8 +1,15 @@
 package ages.pucrs.hackathon.service;
 
+import ages.pucrs.hackathon.dto.TeamRequest;
+import ages.pucrs.hackathon.entity.CompanyEntity;
 import ages.pucrs.hackathon.entity.TeamEntity;
 import ages.pucrs.hackathon.entity.UserEntity;
+import ages.pucrs.hackathon.entity.UserTeamEntity;
+import ages.pucrs.hackathon.repository.CompanyRepository;
 import ages.pucrs.hackathon.repository.TeamRepository;
+import ages.pucrs.hackathon.repository.UserRepository;
+import ages.pucrs.hackathon.repository.UserTeamRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
@@ -19,11 +26,21 @@ public class TeamService {
     @Value("${teams.token}")
     private String token;
     private final TeamRepository teamRepository;
+    private final UserTeamRepository userTeamRepository;
+    private final UserRepository userRepository;
     private final WebClient webClient;
+    private final CompanyRepository companyRepository;
 
-    public TeamService(TeamRepository teamRepository, WebClient.Builder webClientBuilder) {
+    public TeamService(TeamRepository teamRepository,
+                       UserTeamRepository userTeamRepository,
+                       UserRepository userRepository,
+                       WebClient.Builder webClientBuilder,
+                       CompanyRepository companyRepository) {
         this.teamRepository = teamRepository;
+        this.userTeamRepository = userTeamRepository;
+        this.userRepository = userRepository;
         this.webClient = webClientBuilder.baseUrl("https://graph.microsoft.com/beta").build();
+        this.companyRepository = companyRepository;
     }
 
     public List<TeamEntity> listAll() {
@@ -34,8 +51,32 @@ public class TeamService {
         return teamRepository.findById(id);
     }
 
-    public TeamEntity create(TeamEntity team) {
-        return teamRepository.save(team);
+    public TeamEntity create(TeamRequest teamRequest) {
+        CompanyEntity companyEntity = companyRepository.findById(UUID.fromString(teamRequest.getCompanyId())).orElseThrow(()-> new EntityNotFoundException()); 
+        TeamEntity teamEntity = new TeamEntity(UUID.randomUUID(),
+                teamRequest.getName(),
+                teamRequest.getLength(),
+                teamRequest.getService(),
+                companyEntity); // necessario buscar por company_id recebido pelo Auth
+
+        teamEntity = teamRepository.save(teamEntity);
+
+        for (String userId : teamRequest.getMembers()) {
+            Optional<UserEntity> userOpt = userRepository.findById(UUID.fromString(userId));
+
+            if (userOpt.isPresent()) {
+                UserTeamEntity userTeam = new UserTeamEntity(
+                        UUID.randomUUID(),
+                        userOpt.get(),
+                        teamEntity
+                );
+                userTeamRepository.save(userTeam);
+            } else {
+                throw new EntityNotFoundException("User not found: " + userId);
+            }
+        }
+
+        return teamEntity;
     }
 
     public TeamEntity update(UUID id, TeamEntity teamData) {

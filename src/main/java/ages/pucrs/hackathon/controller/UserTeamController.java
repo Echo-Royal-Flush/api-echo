@@ -1,5 +1,6 @@
 package ages.pucrs.hackathon.controller;
 
+import ages.pucrs.hackathon.dto.UserTeamRequest;
 import ages.pucrs.hackathon.entity.TeamEntity;
 import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.entity.UserTeamEntity;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class UserTeamController {
 
     private final UserTeamService userTeamService;
+
     public UserTeamController(UserTeamService userTeamService) {
         this.userTeamService = userTeamService;
     }
@@ -61,8 +63,8 @@ public class UserTeamController {
     }
 
     @PostMapping
-    public ResponseEntity<UserTeamEntity> create(@RequestBody UserTeamEntity userTeam) {
-        return ResponseEntity.ok(userTeamService.create(userTeam));
+    public ResponseEntity<UserTeamEntity> create(@RequestBody UserTeamRequest userTeamRequest) {
+        return ResponseEntity.ok(userTeamService.create(userTeamRequest));
     }
 
     @PutMapping("/{id}")
