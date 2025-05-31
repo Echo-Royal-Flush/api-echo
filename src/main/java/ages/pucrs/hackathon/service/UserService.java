@@ -1,11 +1,12 @@
 package ages.pucrs.hackathon.service;
 
-import ages.pucrs.hackathon.entity.User;
+import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -16,19 +17,19 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> listAll() {
+    public List<UserEntity> listAll() {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(Long id) {
+    public Optional<UserEntity> findById(UUID id) {
         return userRepository.findById(id);
     }
 
-    public User create(User user) {
+    public UserEntity create(UserEntity user) {
         return userRepository.save(user);
     }
 
-    public User update(Long id, User userData) {
+    public UserEntity update(UUID id, UserEntity userData) {
         return userRepository.findById(id)
                 .map(user -> {
                     user.setName(userData.getName());
@@ -40,7 +41,7 @@ public class UserService {
                 }).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public void delete(Long id) {
+    public void delete(UUID id) {
         userRepository.deleteById(id);
     }
 }
