@@ -25,7 +25,7 @@ public class TeamRequest {
     private ServiceEntity service;
 
     @NotBlank(message = "Members should be informed")
-    private List<UUID> members;
+    private List<String> members;
 
     @NotBlank(message = "Company id should be informed")
     private String companyId;

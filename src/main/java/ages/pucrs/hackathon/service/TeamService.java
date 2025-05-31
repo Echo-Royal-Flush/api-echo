@@ -61,8 +61,8 @@ public class TeamService {
 
         teamEntity = teamRepository.save(teamEntity);
 
-        for (UUID userId : teamRequest.getMembers()) {
-            Optional<UserEntity> userOpt = userRepository.findById(userId);
+        for (String userId : teamRequest.getMembers()) {
+            Optional<UserEntity> userOpt = userRepository.findById(UUID.fromString(userId));
 
             if (userOpt.isPresent()) {
                 UserTeamEntity userTeam = new UserTeamEntity(
