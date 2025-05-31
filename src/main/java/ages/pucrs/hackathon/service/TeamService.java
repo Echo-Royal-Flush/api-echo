@@ -103,9 +103,17 @@ public class TeamService {
         }
         String chatId = "19:d9ddd12b-750e-4173-8ebe-1fed14e8e280_f5feea6a-117c-4c06-bcca-784739b7a23b@unq.gbl.spaces";
         System.out.println(token);
-        String message = "Não esqueça de dar seu feedback para a hackthona. É muito importante para nós http://meusite.com.br";
+        String message = "Não esqueça de dar seu feedback para a hackthona. https://main.d17mfmedg0vka5.amplifyapp.com/";
 
         String response = sendMessageToChat(chatId, message, token);
+    }
+
+    @Async
+    public void triggerUser(UUID userId) {
+        String chatId = "19:d9ddd12b-750e-4173-8ebe-1fed14e8e280_f5feea6a-117c-4c06-bcca-784739b7a23b@unq.gbl.spaces";
+        System.out.println(token);
+        String message = "Não esqueça de dar seu feedback para a hackthona. https://main.d17mfmedg0vka5.amplifyapp.com/";
+        sendMessageToChat(chatId, message, token);
     }
 
     public String sendMessageToChat(String chatId, String messageContent, String bearerToken) {

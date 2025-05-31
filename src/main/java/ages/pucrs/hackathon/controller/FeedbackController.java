@@ -49,9 +49,10 @@ public class FeedbackController {
     }
 
     @GetMapping("/paged")
-    public ResponseEntity<PageDTO<FeedbackEntity>> listarClientes(@RequestParam(value = "pagina", required = false ,defaultValue = "0") Integer pagina,
+    public ResponseEntity<PageDTO<FeedbackEntity>> listarClientes(@RequestParam(value = "userId", required = true) UUID userId,
+                                                                  @RequestParam(value = "pagina", required = false ,defaultValue = "0") Integer pagina,
                                                                   @RequestParam(value = "tamanho", required = false, defaultValue = "10") Integer tamanho
     ){
-        return new ResponseEntity<>(feedbackService.pageReturn(pagina, tamanho), HttpStatus.OK);
+        return new ResponseEntity<>(feedbackService.pageReturn(userId, pagina, tamanho), HttpStatus.OK);
     }
 }
