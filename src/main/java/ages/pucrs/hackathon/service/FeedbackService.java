@@ -1,8 +1,17 @@
 package ages.pucrs.hackathon.service;
 
+import ages.pucrs.hackathon.dto.FeedbackCreateDTO;
+import ages.pucrs.hackathon.dto.PageDTO;
+import ages.pucrs.hackathon.entity.CardEntity;
+import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.projection.FeedbackCountByType;
 import ages.pucrs.hackathon.entity.FeedbackEntity;
+import ages.pucrs.hackathon.repository.CardRepository;
 import ages.pucrs.hackathon.repository.FeedbackRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,9 +20,14 @@ import java.util.*;
 public class FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
+    private final CardService cardService;
+    private final UserService userService;
 
-    public FeedbackService(FeedbackRepository feedbackRepository) {
+
+    public FeedbackService(FeedbackRepository feedbackRepository, CardService cardService, UserService userService) {
         this.feedbackRepository = feedbackRepository;
+        this.cardService = cardService;
+        this.userService = userService;
     }
 
     public List<FeedbackEntity> listAll() {
@@ -24,7 +38,24 @@ public class FeedbackService {
         return feedbackRepository.findById(id);
     }
 
-    public FeedbackEntity create(FeedbackEntity feedback) {
+    public FeedbackEntity create(FeedbackCreateDTO dto) {
+        CardEntity card = cardService.findById(dto.idCard())
+                .orElseThrow(() -> new RuntimeException("Card não encontrado"));
+
+        UserEntity evaluator = userService.findById(dto.idEvaluator())
+                .orElseThrow(() -> new RuntimeException("Avaliador não encontrado"));
+
+        FeedbackEntity feedback = FeedbackEntity.builder()
+                .id(UUID.randomUUID())
+                .card(card)
+                .evaluator(evaluator)
+                .idEvaluated(dto.idEvaluated())
+                .description(dto.description())
+                .date(new Date())
+                .isAnon(dto.isAnon())
+                .type(dto.type())
+                .build();
+
         return feedbackRepository.save(feedback);
     }
 
@@ -51,5 +82,19 @@ public class FeedbackService {
         cal.add(Calendar.MONTH, -1);
         Date startDate = cal.getTime();
         return feedbackRepository.countFeedbacksByTypeForUserInLastMonth(userId, startDate);
+    }
+
+    public PageDTO<FeedbackEntity> pageReturn(Integer pagina, Integer tamanho) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "date");
+        Pageable pageable = PageRequest.of(pagina, tamanho, sort);
+        Page<FeedbackEntity> feedbackEntityPage = feedbackRepository.findAll(pageable);
+
+        return new PageDTO<>(
+                feedbackEntityPage.getTotalElements(),
+                feedbackEntityPage.getTotalPages(),
+                feedbackEntityPage.getPageable().getPageNumber(),
+                feedbackEntityPage.getSize(),
+                feedbackEntityPage.getContent()
+        );
     }
 }

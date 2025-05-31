@@ -22,6 +22,6 @@ public class CardEntity {
     private Type type;
 
     public enum Type {
-        POSITIVE, NEGATIVE
+        POSITIVE, CRITICISM
     }
 }

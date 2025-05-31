@@ -1,7 +1,10 @@
 package ages.pucrs.hackathon.controller;
 
+import ages.pucrs.hackathon.dto.FeedbackCreateDTO;
+import ages.pucrs.hackathon.dto.PageDTO;
 import ages.pucrs.hackathon.entity.FeedbackEntity;
 import ages.pucrs.hackathon.service.FeedbackService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +33,7 @@ public class FeedbackController {
     }
 
     @PostMapping
-    public ResponseEntity<FeedbackEntity> create(@RequestBody FeedbackEntity feedback) {
+    public ResponseEntity<FeedbackEntity> create(@RequestBody FeedbackCreateDTO feedback) {
         return ResponseEntity.ok(feedbackService.create(feedback));
     }
 
@@ -43,5 +46,12 @@ public class FeedbackController {
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         feedbackService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/paged")
+    public ResponseEntity<PageDTO<FeedbackEntity>> listarClientes(@RequestParam(value = "pagina", required = false ,defaultValue = "0") Integer pagina,
+                                                                  @RequestParam(value = "tamanho", required = false, defaultValue = "10") Integer tamanho
+    ){
+        return new ResponseEntity<>(feedbackService.pageReturn(pagina, tamanho), HttpStatus.OK);
     }
 }
