@@ -29,16 +29,9 @@ public class UserTeamController {
     }
 
     @GetMapping("/{id}/users")
-    public ResponseEntity<List<Map<String, Object>>> getUsersByTeamId(@PathVariable UUID id) {
+    public ResponseEntity<List<UserEntity>> getUsersByTeamId(@PathVariable UUID id) {
         List<UserEntity> users = userTeamService.findUsersByTeamId(id);
-        List<Map<String, Object>> response = users.stream().map(user -> {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", user.getId());
-            map.put("name", user.getName());
-            return map;
-        }).toList();
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/user/{userId}/teams")

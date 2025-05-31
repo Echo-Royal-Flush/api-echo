@@ -30,10 +30,7 @@ public class UserTeamService {
     }
 
     public List<UserEntity> findUsersByTeamId(UUID teamId) {
-        List<UserTeamEntity> userTeams = userTeamRepository.findByTeam_Id(teamId);
-        return userTeams.stream()
-                .map(UserTeamEntity::getUser)
-                .toList();
+        return userTeamRepository.findUsersByTeamId(teamId);
     }
 
     public List<TeamEntity> findTeamsByUserId(UUID userId) {

@@ -18,7 +18,7 @@ CREATE TABLE
         "id_card" UUID NOT NULL,
         "id_evaluator" UUID NOT NULL,
         "id_evaluated" UUID NOT NULL,
-        "description" VARCHAR(255) NOT NULL,
+        "description" VARCHAR(255),
         "date" DATE NOT NULL,
         "is_anon" BOOLEAN NOT NULL,
         "type" VARCHAR(30) CHECK ("type" IN ('USER', 'SERVICE')) NOT NULL
