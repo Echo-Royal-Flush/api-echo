@@ -3,11 +3,14 @@ package ages.pucrs.hackathon.service;
 import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.entity.UserTeamEntity;
 import ages.pucrs.hackathon.repository.UserTeamRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import ages.pucrs.hackathon.entity.TeamEntity;
 
 @Service
 public class UserTeamService {
@@ -24,6 +27,13 @@ public class UserTeamService {
                 .map(UserTeamEntity::getUser)
                 .toList();
     }
+
+    public List<TeamEntity> findTeamsByUserId(UUID userId) {
+        return userTeamRepository.findAllByUserId(userId).stream()
+                .map(UserTeamEntity::getTeam)
+                .toList();
+    }
+
 
     public List<UserTeamEntity> listAll() {
         return userTeamRepository.findAll();

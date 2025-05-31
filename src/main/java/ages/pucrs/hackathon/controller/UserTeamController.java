@@ -1,5 +1,6 @@
 package ages.pucrs.hackathon.controller;
 
+import ages.pucrs.hackathon.entity.TeamEntity;
 import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.entity.UserTeamEntity;
 import ages.pucrs.hackathon.service.UserTeamService;
@@ -37,6 +38,20 @@ public class UserTeamController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/user/{userId}/teams")
+    public ResponseEntity<List<Map<String, Object>>> getTeamsByUser(@PathVariable UUID userId) {
+        List<TeamEntity> teams = userTeamService.findTeamsByUserId(userId);
+        List<Map<String, Object>> response = teams.stream().map(team -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", team.getId());
+            map.put("name", team.getName());
+            return map;
+        }).toList();
+
+        return ResponseEntity.ok(response);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<UserTeamEntity> getById(@PathVariable UUID id) {
