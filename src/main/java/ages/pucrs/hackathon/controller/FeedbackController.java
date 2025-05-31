@@ -48,10 +48,12 @@ public class FeedbackController {
 
     @PostMapping("/{userId}/{card_type}")
     public ResponseEntity<Void> registerFeedbackToUser(
+        @PathVariable UUID currenUserId,
         @PathVariable UUID userId, 
         @PathVariable String card_type, 
+        @RequestBody UUID id,
         @RequestBody String description) {
-        feedbackService.registerFeedbackToUser(userId, card_type, description);
+        feedbackService.registerFeedbackToUser(id, currenUserId, userId, card_type, description);
         return ResponseEntity.noContent().build();
     }
 

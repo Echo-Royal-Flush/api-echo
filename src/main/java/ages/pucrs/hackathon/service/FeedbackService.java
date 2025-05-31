@@ -5,7 +5,6 @@ import ages.pucrs.hackathon.entity.CardEntity;
 import ages.pucrs.hackathon.entity.FeedbackEntity;
 import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.repository.FeedbackRepository;
-import ages.pucrs.hackathon.repository.UserRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -14,19 +13,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.time.LocalDate;
 
 @Service
 public class FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
-    private final UserService userService;
     private final CardService cardService;
+    private final UserService userService;
 
     public FeedbackService(FeedbackRepository feedbackRepository, UserService userService, CardService cardService) {
         this.feedbackRepository = feedbackRepository;
-        this.userService = userService;
         this.cardService = cardService;
+        this.userService = userService;
     }
 
     public List<FeedbackEntity> listAll() {
@@ -66,11 +64,14 @@ public class FeedbackService {
         return feedbackRepository.countFeedbacksByTypeForUserInLastMonth(userId, startDate);
     }
 
-    public void registerFeedbackToUser(UUID userId, String card_type, String description){
+    public void registerFeedbackToUser(UUID id, UUID currentUserId, UUID userId, String card_type, String description){
         Optional<CardEntity> card = cardService.findByType(card_type);
+        Optional<UserEntity> user = userService.findById(currentUserId);
         Date today = new Date();
         
         FeedbackEntity feedback = FeedbackEntity.builder()
+                                    .id(id)
+                                    .evaluator(user.get())
                                     .idEvaluated(userId)
                                     .card(card.get())
                                     .description(description)
