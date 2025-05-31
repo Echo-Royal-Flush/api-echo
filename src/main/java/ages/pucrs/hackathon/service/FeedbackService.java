@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Service
@@ -90,7 +91,23 @@ public class FeedbackService {
         return feedbackRepository.countFeedbacksByTypeForUserInLastMonth(userId, startDate);
     }
 
+    public List<FeedbackEntity> getFeedbacksDoneToday(UUID userId) {
+        LocalDate today = LocalDate.now();
+
+        ZonedDateTime start = today.atStartOfDay(ZoneId.systemDefault());
+        ZonedDateTime end = today.plusDays(1).atStartOfDay(ZoneId.systemDefault()).minusNanos(1);
+
+        Date startOfDay = Date.from(start.toInstant());
+        Date endOfDay = Date.from(end.toInstant());
+
+        return feedbackRepository.feedbacksDoneToday(userId, startOfDay, endOfDay);
+    }
+
     public PageDTO<FeedbackEntity> pageReturn(UUID userId, Integer pagina, Integer tamanho) {
+        List<FeedbackEntity> feedbacks = getFeedbacksDoneToday(userId);
+        if(feedbacks.size() <= 0){
+            return null;
+        }
         Sort sort = Sort.by(Sort.Direction.DESC, "date");
         Pageable pageable = PageRequest.of(pagina, tamanho, sort);
 

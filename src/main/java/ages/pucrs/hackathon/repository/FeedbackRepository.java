@@ -24,6 +24,15 @@ public interface FeedbackRepository extends JpaRepository<FeedbackEntity, UUID> 
             @Param("userId") UUID userId,
             @Param("startDate") Date startDate
     );
+
+        @Query("SELECT f FROM FeedbackEntity f " +
+        "WHERE f.evaluator.id = :userId " +
+        "AND f.date BETWEEN :startOfDay AND :endOfDay")
+        List<FeedbackEntity> feedbacksDoneToday(
+        @Param("userId") UUID userId,
+        @Param("startOfDay") Date startOfDay,
+        @Param("endOfDay") Date endOfDay
+        );
     
     Page<FeedbackEntity> findAllByIdEvaluated(UUID idEvaluated, Pageable pageable);
 
