@@ -1,5 +1,6 @@
 package ages.pucrs.hackathon.service;
 
+import ages.pucrs.hackathon.dto.UserResponse;
 import ages.pucrs.hackathon.dto.UserTeamRequest;
 import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.entity.UserTeamEntity;
@@ -29,10 +30,10 @@ public class UserTeamService {
         this.teamRepository = teamRepository;
     }
 
-    public List<UserEntity> findUsersByTeamId(UUID teamId) {
-        List<UserTeamEntity> userTeams = userTeamRepository.findByTeam_Id(teamId);
-        return userTeams.stream()
-                .map(UserTeamEntity::getUser)
+    public List<UserResponse> findUsersByTeamId(UUID teamId) {
+        List<UserEntity> userEntity = userTeamRepository.findUsersByTeamId(teamId);
+        return userEntity.stream()
+                .map(user -> new UserResponse(user.getId(), user.getName()))
                 .toList();
     }
 
