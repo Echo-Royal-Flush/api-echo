@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -20,7 +21,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(Long id) {
+    public Optional<User> findById(UUID id) {
         return userRepository.findById(id);
     }
 
@@ -28,7 +29,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User update(Long id, User userData) {
+    public User update(UUID id, User userData) {
         return userRepository.findById(id)
                 .map(user -> {
                     user.setName(userData.getName());
@@ -40,7 +41,7 @@ public class UserService {
                 }).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public void delete(Long id) {
+    public void delete(UUID id) {
         userRepository.deleteById(id);
     }
 }
