@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.pessoaapi.config;
+package ages.pucrs.hackathon.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
