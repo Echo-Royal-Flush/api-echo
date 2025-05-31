@@ -29,6 +29,10 @@ public class UserEntity {
 
     private String password;
 
+    @ManyToOne
+    @JoinColumn(name = "id_company")
+    private CompanyEntity company;
+
     public enum Role {
         ADMIN, EMPLOYEE
     }
