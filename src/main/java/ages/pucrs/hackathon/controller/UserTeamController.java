@@ -1,11 +1,14 @@
 package ages.pucrs.hackathon.controller;
 
+import ages.pucrs.hackathon.entity.UserEntity;
 import ages.pucrs.hackathon.entity.UserTeamEntity;
 import ages.pucrs.hackathon.service.UserTeamService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -20,6 +23,19 @@ public class UserTeamController {
     @GetMapping
     public List<UserTeamEntity> getAll() {
         return userTeamService.listAll();
+    }
+
+    @GetMapping("/{id}/users")
+    public ResponseEntity<List<Map<String, Object>>> getUsersByTeamId(@PathVariable UUID id) {
+        List<UserEntity> users = userTeamService.findUsersByTeamId(id);
+        List<Map<String, Object>> response = users.stream().map(user -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", user.getId());
+            map.put("name", user.getName());
+            return map;
+        }).toList();
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
