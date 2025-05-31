@@ -2,22 +2,25 @@ package ages.pucrs.hackathon.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.UUID;
 
 @Entity
-@Table(name = "users")
-@Data
+@Table(name = "user")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     private String name;
 
-    private String role;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private String position;
 
@@ -25,5 +28,8 @@ public class User {
     private String email;
 
     private String password;
-}
 
+    public enum Role {
+        ADMIN, EMPLOYEE
+    }
+}
