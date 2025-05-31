@@ -11,8 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -21,12 +24,14 @@ public class FeedbackService {
     private final FeedbackRepository feedbackRepository;
     private final CardService cardService;
     private final UserService userService;
+    private final TeamService teamService;
 
 
-    public FeedbackService(FeedbackRepository feedbackRepository, CardService cardService, UserService userService) {
+    public FeedbackService(FeedbackRepository feedbackRepository, CardService cardService, UserService userService, TeamService teamService) {
         this.feedbackRepository = feedbackRepository;
         this.cardService = cardService;
         this.userService = userService;
+        this.teamService = teamService;
     }
 
     public List<FeedbackEntity> listAll() {
@@ -38,6 +43,8 @@ public class FeedbackService {
     }
 
     public FeedbackEntity create(FeedbackCreateDTO dto) {
+        sendMessageToUser(dto.idEvaluated());
+
         CardEntity card = cardService.findById(dto.idCard())
                 .orElseThrow(() -> new RuntimeException("Card não encontrado"));
 
@@ -96,5 +103,20 @@ public class FeedbackService {
                 feedbackEntityPage.getSize(),
                 feedbackEntityPage.getContent()
         );
+    }
+
+    @Async
+    protected void sendMessageToUser(UUID userID){
+        ZoneId zoneBrazil = ZoneId.of("America/Sao_Paulo");
+        LocalDate today = LocalDate.now(zoneBrazil);
+
+        Date startOfDay = Date.from(today.atStartOfDay(zoneBrazil).toInstant());
+        Date endOfDay = Date.from(today.plusDays(1).atStartOfDay(zoneBrazil).toInstant());
+
+        long total = feedbackRepository.countByDateBetweenAndEvaluatorId(startOfDay, endOfDay, userID);
+
+        if(total >= 1){
+            teamService.triggerUser(userID);
+        }
     }
 }

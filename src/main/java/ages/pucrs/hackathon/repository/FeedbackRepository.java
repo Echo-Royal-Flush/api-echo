@@ -27,4 +27,6 @@ public interface FeedbackRepository extends JpaRepository<FeedbackEntity, UUID> 
     
     Page<FeedbackEntity> findAllByIdEvaluated(UUID idEvaluated, Pageable pageable);
 
+    long countByDateBetweenAndEvaluatorId(Date start, Date end, UUID evaluatorId);
+
 }
