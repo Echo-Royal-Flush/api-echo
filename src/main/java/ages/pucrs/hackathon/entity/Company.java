@@ -2,18 +2,19 @@ package ages.pucrs.hackathon.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "company")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Company {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     private String name;
 
@@ -30,8 +31,8 @@ public class Company {
     private String adStreet;
 
     @Column(name = "ad_number")
-    private String adNumber;
+    private Integer adNumber;
 
     @Column(name = "ad_cep")
-    private String adCep;
+    private Integer adCep;
 }

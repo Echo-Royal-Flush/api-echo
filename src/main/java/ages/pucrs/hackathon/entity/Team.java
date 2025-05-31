@@ -2,26 +2,30 @@ package ages.pucrs.hackathon.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "team")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Team {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     private String name;
 
-    @Column(name = "id_service")
-    private Long idService;
-
+    @Column(name = "length")
     private Integer length;
 
-    @Column(name = "id_company")
-    private Long idCompany;
+    @ManyToOne
+    @JoinColumn(name = "id_service")
+    private Service service;
+
+    @ManyToOne
+    @JoinColumn(name = "id_company")
+    private Company company;
 }

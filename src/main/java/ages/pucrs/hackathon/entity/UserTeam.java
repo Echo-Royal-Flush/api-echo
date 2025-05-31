@@ -5,16 +5,22 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "service")
+@Table(name = "user_team")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Service {
+public class UserTeam {
 
     @Id
     private UUID id;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "id_team")
+    private Team team;
 }

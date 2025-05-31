@@ -5,16 +5,23 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "service")
+@Table(name = "card")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Service {
+public class Card {
 
     @Id
     private UUID id;
 
-    private String name;
+    private String category;
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    public enum Type {
+        POSITIVE, NEGATIVE
+    }
 }
