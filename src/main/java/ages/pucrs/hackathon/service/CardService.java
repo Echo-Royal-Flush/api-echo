@@ -25,6 +25,11 @@ public class CardService {
         return cardRepository.findById(id);
     }
 
+    public Optional<CardEntity> findByType(String cardTypeString){
+        CardEntity.Type type = CardEntity.Type.valueOf(cardTypeString.toUpperCase());
+        return cardRepository.findByType(type);
+    }
+
     public CardEntity create(CardEntity card) {
         return cardRepository.save(card);
     }

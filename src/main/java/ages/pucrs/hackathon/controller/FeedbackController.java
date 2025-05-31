@@ -1,5 +1,6 @@
 package ages.pucrs.hackathon.controller;
 
+import ages.pucrs.hackathon.entity.CardEntity;
 import ages.pucrs.hackathon.entity.FeedbackEntity;
 import ages.pucrs.hackathon.service.FeedbackService;
 import org.springframework.http.ResponseEntity;
@@ -44,4 +45,14 @@ public class FeedbackController {
         feedbackService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{userId}/{card_type}")
+    public ResponseEntity<Void> registerFeedbackToUser(
+        @PathVariable UUID userId, 
+        @PathVariable String card_type, 
+        @RequestBody String description) {
+        feedbackService.registerFeedbackToUser(userId, card_type, description);
+        return ResponseEntity.noContent().build();
+    }
+
 }
