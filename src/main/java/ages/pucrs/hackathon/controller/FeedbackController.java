@@ -1,5 +1,6 @@
 package ages.pucrs.hackathon.controller;
 
+import ages.pucrs.hackathon.dto.FeedbackCreateDTO;
 import ages.pucrs.hackathon.dto.PageDTO;
 import ages.pucrs.hackathon.entity.FeedbackEntity;
 import ages.pucrs.hackathon.service.FeedbackService;
@@ -32,7 +33,7 @@ public class FeedbackController {
     }
 
     @PostMapping
-    public ResponseEntity<FeedbackEntity> create(@RequestBody FeedbackEntity feedback) {
+    public ResponseEntity<FeedbackEntity> create(@RequestBody FeedbackCreateDTO feedback) {
         return ResponseEntity.ok(feedbackService.create(feedback));
     }
 
