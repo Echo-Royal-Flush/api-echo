@@ -1,5 +1,6 @@
 package ages.pucrs.hackathon.controller;
 
+import ages.pucrs.hackathon.dto.TeamRequest;
 import ages.pucrs.hackathon.entity.TeamEntity;
 import ages.pucrs.hackathon.service.TeamService;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import static org.springframework.http.ResponseEntity.accepted;
 public class TeamController {
 
     private final TeamService teamService;
+
     public TeamController(TeamService teamService) {
         this.teamService = teamService;
     }
@@ -32,8 +34,8 @@ public class TeamController {
     }
 
     @PostMapping
-    public ResponseEntity<TeamEntity> create(@RequestBody TeamEntity team) {
-        return ResponseEntity.ok(teamService.create(team));
+    public ResponseEntity<TeamEntity> create(@RequestBody TeamRequest teamRequest) {
+        return ResponseEntity.ok(teamService.create(teamRequest));
     }
 
     @PutMapping("/{id}")
